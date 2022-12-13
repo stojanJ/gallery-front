@@ -10,24 +10,30 @@ export default function RegisterPage() {
   const { user, register } = useAuth();
 
   const [checked, setChecked] = useState(false);
+  const [showError, setShowError] = useState(false); 
 
+  const handleChange = () => {
+    setChecked(!checked);
+  };
+  
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
+      if (!checked){
+        setShowError(true);
+        return
+      }
       await register(newUser);
     } catch (error) { }
-  };
-  const handleChange = () => {
-    setChecked(!checked);
   };
 
   return (
     <div>
       <form onSubmit={handleRegister}>
-      <div class="form-group">
+      <div className="form-group">
         <label> First Name:
           <input
-            class="form-control"
+            className="form-control"
             required
             type="name"
             value={newUser.name}
@@ -37,11 +43,11 @@ export default function RegisterPage() {
           />
         </label>
         </div>
-        <div class="form-group">
+        <div className="form-group">
 
         <label> Last Name:
           <input
-            class="form-control"
+            className="form-control"
           required
           type="lastName"
           value={newUser.lastName}
@@ -50,10 +56,10 @@ export default function RegisterPage() {
           } />
           </label>
           </div>
-        <div class="form-group">
+        <div className="form-group">
         <label> Email:
           <input
-            class="form-control"
+            className="form-control"
           required
           type="email"
           name="name"
@@ -64,10 +70,10 @@ export default function RegisterPage() {
         />
         </label>
         </div>
-        <div class="form-group">
+        <div className="form-group">
         <label> Password:
           <input
-            class="form-control"
+            className="form-control"
           required
           type="password"
           minLength='8'
@@ -79,18 +85,19 @@ export default function RegisterPage() {
         
         </label>
         </div>
-        <div class="form-group">
+        <div className="form-group">
         <label>
           <input
-             class="form-check-input" 
+             className="form-check-input" 
             type="checkbox"
             checked={checked}
             onChange={handleChange}
           />
           Accepted terms and conditions
         </label>
+        {showError ? <p>Terms and conditions are required</p> : ""}
         </div>
-        <Button type="submit" class="btn btn-primary">Register</Button>
+        <Button type="submit" className="btn btn-primary">Register</Button>
       </form>
     </div>
   );
